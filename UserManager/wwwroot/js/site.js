@@ -1,4 +1,23 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿(function ($) {
+    $.fn.serializeFormToObject = function (camelCased = false) {
+        const data = $(this).serializeArray();
 
-// Write your JavaScript code.
+        $(':disabled[name]', this).each(function () {
+            data.push({ name: this.name, value: $(this).val() });
+        });
+
+        const obj = {};
+        data.map(function (x) { obj[x.name] = x.value; });
+
+        return obj;
+    };
+
+    $.fn.clearForm = function () {
+        const $this = $(this);
+
+        $('[name]', $this).each((i, obj) => {
+            $(obj).removeClass('is-invalid');
+        });
+        $this[0].reset();
+    };
+})(jQuery);

@@ -1,18 +1,78 @@
-html {
-  font-size: 14px;
+.error {
+    color: #bd0e00;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.auth-fluid {
+    position: relative;
+    display: flex;
+    /* align-items: center; */
+    min-height: 100vh;
+    flex-direction: row;
+    align-items: stretch;
+    background: url(../images/login-bg.jpg) center;
+    background-size: cover;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .auth-fluid .auth-fluid-right {
+        padding: 6rem 3rem;
+        flex: 1;
+        position: relative;
+        color: #fff;
+        background-color: rgba(0,0,0,.5);
+    }
+
+    .auth-fluid .auth-fluid-form-box {
+        max-width: 480px;
+        border-radius: 0;
+        z-index: 2;
+        padding: 3rem 2rem;
+        background-color: #fff;
+        position: relative;
+        width: 100%;
+    }
+
+.auth-fluid-right {
+    padding: 6rem 3rem;
+    flex: 1;
+    position: relative;
+    color: $white;
+    background-color: rgba($black,0.5);
 }
 
-body {
-  margin-bottom: 60px;
+.auth-brand {
+    margin-bottom: 2rem;
+}
+
+.auth-user-testimonial {
+    position: absolute;
+    margin: 0 auto;
+    padding: 0 2.75rem;
+    bottom: 3rem;
+    left: 0;
+    right: 0;
+}
+
+    .auth-user-testimonial p.lead {
+        max-width: 700px;
+    }
+
+@media (min-width: 992px) {
+    .auth-brand {
+        top: 3rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .auth-fluid {
+        display: block;
+    }
+
+        .auth-fluid .auth-fluid-form-box {
+            max-width: 100%;
+            min-height: 100vh
+        }
+
+        .auth-fluid .auth-fluid-right {
+            display: none;
+        }
 }

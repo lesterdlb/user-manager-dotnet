@@ -1,0 +1,12 @@
+﻿<form name="roleForm" role="form" class="form-horizontal" autocomplete="off">
+    <input type="hidden" name="Id" />
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-2 col-form-label" for="Name">Name</label>
+            <div class="col-md-10">
+                <input id="Name" type="text" name="Name" class="form-control" required maxlength="32" minlength="2">
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalSaveCancelButtons.cshtml")
+</form>
