@@ -32,6 +32,7 @@ namespace UserManager.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Email or Username")]
             public string Email { get; set; }
             [Required]
             [DataType(DataType.Password)]

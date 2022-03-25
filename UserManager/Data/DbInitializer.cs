@@ -20,6 +20,7 @@ namespace UserManager.Data
             if (_roleManager.FindByIdAsync(Enums.Roles.Admin.ToString()).Result == null)
             {
                 _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Admin.ToString())).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Basic.ToString())).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Student.ToString())).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Teacher.ToString())).GetAwaiter().GetResult();
             }

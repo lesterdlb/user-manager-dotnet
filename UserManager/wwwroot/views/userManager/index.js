@@ -1,11 +1,11 @@
 ﻿(function ($) {
-    const createModal = $('#RoleCreateModal');
-    const editModal = $('#RoleEditModal');
+    const createModal = $('#UserCreateModal');
+    const editModal = $('#UserEditModal');
 
     const createForm = createModal.find('form');
     const editForm = editModal.find('form');
 
-    const rolesTable = $('#RolesTable').DataTable({
+    const usersTable = $('#UsersTable').DataTable({
         "processing": true,
         "serverSide": false,
         "filter": false,
@@ -15,25 +15,32 @@
         "autoWidth": false,
         "responsive": true,
         "ajax": {
-            "url": 'RoleManager/Get',
+            "url": 'UserManager/GetAll',
             "type": "GET",
             "datatype": "json",
         },
         columns: [
             {
-                "data": 'id',
+                "data": 'userName',
             },
             {
-                "data": 'name',
+                "data": 'email',
             },
+            {
+                "data": 'firstName',
+            },
+            {
+                "data": 'lastName',
+            },
+
             {
                 "data": null,
                 "render": (data) => {
                     return [
-                        `   <button type="button" class="btn btn-sm bg-secondary edit-role" data-role-id="${data.id}" data-role-name="${data.name}" data-toggle="modal" data-target="#RoleEditModal">`,
+                        `   <button type="button" class="btn btn-sm bg-secondary edit-user" data-user-id="${data.id}" data-user-name="${data.name}" data-toggle="modal" data-target="#UserEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> Edit`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-danger delete-role" data-role-id="${data.id}" data-role-name="${data.name}">`,
+                        `   <button type="button" class="btn btn-sm bg-danger delete-user" data-user-id="${data.id}" data-user-username="${data.userName}">`,
                         `       <i class="fas fa-trash"></i> Delete`,
                         '   </button>',
                     ].join('');
@@ -42,11 +49,23 @@
         ]
     });
 
-    $(document).on('click', '.edit-role', function (e) {
+    $(document).on('click', '.edit-user', function (e) {
         e.preventDefault();
 
-        editModal.find('input[name="Id"]').val($(this).attr("data-role-id"));
-        editModal.find('#Name').val($(this).attr("data-role-name"));
+        const userId = $(this).attr("data-user-id");
+
+        $.ajax({
+            url: '/UserManager/Get?userId=' + userId,
+            type: 'POST',
+            success: function (result) {
+                editModal.find('input[name="Id"]').val(result.id);
+                editModal.find('#Email').val(result.email);
+                editModal.find('#FirstName').val(result.firstName);
+                editModal.find('#LastName').val(result.lastName);
+            },
+            error: function (e) {
+            }
+        });
     });
 
     createForm.find('.save-button').on('click', (e) => {
@@ -56,8 +75,8 @@
             return;
         }
 
-        const role = createForm.serializeFormToObject();
-        createEditRole("/RoleManager/Add", "POST", { name: role.Name }, createModal);
+        const user = createForm.serializeFormToObject();
+        createEditUser("/UserManager/Create", "POST", user, createModal);
     });
 
     editForm.find('.save-button').on('click', (e) => {
@@ -67,18 +86,19 @@
             return;
         }
 
-        const role = editForm.serializeFormToObject();
-        createEditRole("/RoleManager/Edit", "PUT", { id: role.Id, name: role.Name }, editModal);
+        const user = editForm.serializeFormToObject();
+        createEditUser("/UserManager/Edit", "PUT", user, editModal);
     });
 
-    const createEditRole = (url, method, data, modal) => {
+    const createEditUser = (url, method, data, modal) => {
         $.ajax({
             url: url,
             data: data,
             type: method,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function (result) {
                 modal.modal('hide');
-                rolesTable.ajax.reload();
+                usersTable.ajax.reload();
                 toastr.success(result);
             },
             error: function (result) {
@@ -88,13 +108,13 @@
         });
     }
 
-    $(document).on('click', '.delete-role', function () {
-        const roleId = $(this).attr("data-role-id");
-        const roleName = $(this).attr('data-role-name');
+    $(document).on('click', '.delete-user', function () {
+        const userId = $(this).attr("data-user-id");
+        const userName = $(this).attr('data-user-username');
 
         Swal.fire({
             title: 'Are you sure?',
-            text: 'This role "' + roleName + '" will be removed from all its associated users.',
+            text: 'This User "' + userName + '" will be deleted.',
             icon: 'warning',
             reverseButtons: 'true',
             showCancelButton: true,
@@ -104,11 +124,11 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "/RoleManager/Delete",
-                    data: { id: roleId },
+                    url: "/UserManager/Delete",
+                    data: { userId: userId },
                     type: "DELETE",
                     success: (result) => {
-                        rolesTable.ajax.reload();
+                        usersTable.ajax.reload();
                         toastr.success(result);
                     },
                     error: (result) => {
