@@ -17,7 +17,7 @@ namespace UserManager.Data
         public void Initialize()
         {
             // Create Roles
-            if (_roleManager.FindByIdAsync(Enums.Roles.Admin.ToString()).Result == null)
+            if (!_roleManager.RoleExistsAsync(Enums.Roles.Admin.ToString()).Result)
             {
                 _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Admin.ToString())).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(Enums.Roles.Basic.ToString())).GetAwaiter().GetResult();

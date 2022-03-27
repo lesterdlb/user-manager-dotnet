@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using UserManager.Models;
 using UserManager.ViewModels;
@@ -27,8 +28,9 @@ namespace UserManager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            var roles = await _roleManager.Roles.Where(r => r.Name != Enums.Roles.Admin.ToString()).ToListAsync();
             var users = new List<ApplicationUser>();
-            foreach (var role in _roleManager.Roles.Where(r => r.Name != Enums.Roles.Admin.ToString()))
+            foreach (var role in roles)
             {
                 users.AddRange(await _userManager.GetUsersInRoleAsync(role.Name));
             }
