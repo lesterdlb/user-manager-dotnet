@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\UserManager.Application\UserManager.Application.csproj" />
       <ProjectReference Include="..\UserManager.Infrastructure\UserManager.Infrastructure.csproj" />
     </ItemGroup>
