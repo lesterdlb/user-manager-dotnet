@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Users";
+}
+
+@section Styles
+{
+<link rel="stylesheet" href="lib/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="lib/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="lib/toastr/toastr.min.css">
+<link rel="stylesheet" href="lib/sweetalert2/sweetalert2.css">
+}
+
+@section Scripts
+{
+<script src="lib/datatables/jquery.dataTables.min.js"></script>
+<script src="lib/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="lib/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="lib/toastr/toastr.min.js"></script>
+<script src="lib/sweetalert2/sweetalert2.min.js"></script>
+
+<partial name="_ValidationScriptsPartial" />
+<script src="~/views/userManager/index.js" asp-append-version="true"></script>
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h2 class="m-0 text-dark">Users</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Users list</h3>
+                    </div>
+                    <div class="card-body">
+                        <table id="UsersTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>UserName</th>
+                                    <th>Email</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#UserCreateModal">
+                    Create New User
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UserCreateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml",
+            new ViewDataDictionary(this.ViewData) { { "modalTitle", "Create New User"} })
+            new ViewDataDictionary(this.ViewData) { {"showPassword", true} })
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UserEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml",
+            new ViewDataDictionary(this.ViewData) { { "modalTitle", "Edit User"} })
+            new ViewDataDictionary(this.ViewData) { {"showPassword", false} })
+        </div>
+    </div>
+</div>
