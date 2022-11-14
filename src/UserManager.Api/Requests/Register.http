@@ -1,0 +1,10 @@
+POST {{host}}/api/authentication/register
+Content-Type: application/json
+
+{
+  "firstName": "Peter",
+  "lastName": "Doe",
+  "email": "johndoe@mail.com",
+  "password": "123qwe",
+  "role": "User"
+}
