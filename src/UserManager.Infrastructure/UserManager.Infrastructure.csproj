@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Mapster" Version="7.3.0" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
@@ -22,5 +24,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\UserManager.Application\UserManager.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Persistence\Configurations" />
     </ItemGroup>
 </Project>

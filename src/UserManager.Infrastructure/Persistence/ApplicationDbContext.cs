@@ -8,7 +8,7 @@ using UserManager.Infrastructure.Persistence.Interceptors;
 
 namespace UserManager.Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
@@ -22,9 +22,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         base.OnModelCreating(builder);
+        
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
