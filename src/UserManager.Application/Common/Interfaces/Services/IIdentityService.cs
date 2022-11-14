@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using UserManager.Contracts.Authentication;
+using UserManager.Application.Common.Contracts.Authentication;
 
 namespace UserManager.Application.Common.Interfaces.Services;
 
