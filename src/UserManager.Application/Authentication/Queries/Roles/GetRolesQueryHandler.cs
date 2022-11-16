@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using UserManager.Application.Common.Interfaces.Services;
+using UserManager.Application.Common.Interfaces.Authentication;
 
 namespace UserManager.Application.Authentication.Queries.Roles;
 
