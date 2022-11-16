@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using UserManager.Application.Common.Interfaces;
+using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Application.Common.Interfaces.Services;
 using UserManager.Infrastructure.Authentication;
 using UserManager.Infrastructure.Identity;
@@ -31,6 +32,7 @@ public static class DependencyInjection
 
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<IIdentityService, IdentityService>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddAuthentication(options =>
             {
@@ -84,7 +86,12 @@ public static class DependencyInjection
             provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<ApplicationDbContextInitializer>();
 
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
     }

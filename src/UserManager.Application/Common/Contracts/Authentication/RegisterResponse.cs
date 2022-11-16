@@ -1,3 +1,3 @@
 ﻿namespace UserManager.Application.Common.Contracts.Authentication;
 
-public record RegisterResponse(Guid UserId);
+public record RegisterResponse(string UserId);

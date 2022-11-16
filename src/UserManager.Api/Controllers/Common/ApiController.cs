@@ -10,16 +10,15 @@ namespace UserManager.Api.Controllers.Common;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class ApiController : ControllerBase
+public abstract class ApiController : ControllerBase
 {
-    public ApiController(IMapper mapper, ISender mediator)
+    protected ApiController(IMapper mapper, ISender mediator)
     {
         Mapper = mapper;
         Mediator = mediator;
     }
 
     protected ISender Mediator { get; }
-
     protected IMapper Mapper { get; }
 
     protected ActionResult Problem(List<Error> errors)
