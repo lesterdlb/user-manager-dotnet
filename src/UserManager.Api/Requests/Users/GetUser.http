@@ -1,0 +1,2 @@
+GET {{host}}/api/users/fc252e4b-a66d-42d6-879e-987a6434a70f
+Content-Type: application/json
