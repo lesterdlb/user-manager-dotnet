@@ -6,7 +6,7 @@ public static partial class Errors
 {
     public static class User
     {
-        public static Error UserCouldNotBeCreated = Error.Unexpected(
+        public static Error UserCouldNotBeCreated => Error.Unexpected(
             code: "user.could.not.be.created",
             description: "User could not be created");
 

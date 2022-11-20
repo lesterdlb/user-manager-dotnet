@@ -65,5 +65,35 @@ public class ApplicationDbContextInitializer
             await _roleManager.CreateAsync(adminRole);
             await _roleManager.CreateAsync(userRole);
         }
+        
+        // Default users
+        var adminUser = new ApplicationUser
+        {
+            UserName = "admin",
+            Email = "admin@localhost",
+            EmailConfirmed = true,
+            FirstName = "Admin",
+            LastName = "User",
+            PhoneNumber = "1234567890",
+            PhoneNumberConfirmed = true
+        };
+        
+        var user = new ApplicationUser
+        {
+            UserName = "user",
+            Email = "user@localhost",
+            EmailConfirmed = true,
+            FirstName = "Normal",
+            LastName = "User",
+            PhoneNumber = "1234567890",
+            PhoneNumberConfirmed = true
+        };
+
+        if (_userManager.Users.All(u =>
+                u.UserName != adminUser.UserName && u.UserName != user.UserName))
+        {
+            await _userManager.CreateAsync(adminUser, "123qwe");
+            await _userManager.CreateAsync(user, "123qwe");
+        }
     }
 }
