@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManager.Api", "src\User
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManager.Application.IntegrationTests", "tests\UserManager.Application.IntegrationTests\UserManager.Application.IntegrationTests.csproj", "{575FEEB6-2B84-46C5-9B31-B4569CF7F7D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManager.Application.UnitTests", "tests\UserManager.Application.UnitTests\UserManager.Application.UnitTests.csproj", "{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManager.MVC", "src\UserManager.MVC\UserManager.MVC.csproj", "{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{575FEEB6-2B84-46C5-9B31-B4569CF7F7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{575FEEB6-2B84-46C5-9B31-B4569CF7F7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{575FEEB6-2B84-46C5-9B31-B4569CF7F7D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +74,7 @@ Global
 		{4D24D146-1700-425E-ACC6-2FC73D3FCA36} = {6354D1A7-9347-4360-B23A-84B3E830570C}
 		{20ADE715-22AD-42F0-9C3A-E0CE9BAE0E46} = {6354D1A7-9347-4360-B23A-84B3E830570C}
 		{575FEEB6-2B84-46C5-9B31-B4569CF7F7D3} = {446074C4-37DD-45F7-9986-843C917FD8CE}
+		{B2DB63A1-1AB4-42D5-ADD2-9FB5E40EFB04} = {446074C4-37DD-45F7-9986-843C917FD8CE}
+		{4E84019C-8D9F-4E98-A0C0-8E2A3FC10B84} = {6354D1A7-9347-4360-B23A-84B3E830570C}
 	EndGlobalSection
 EndGlobal
