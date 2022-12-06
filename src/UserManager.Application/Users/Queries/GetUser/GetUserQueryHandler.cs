@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using UserManager.Application.Common.Interfaces.Users;
-using UserManager.Domain.Common.DTOs.User;
 using ErrorOr;
+using UserManager.Application.Common.DTOs.Authentication;
 using UserManager.Domain.Common.Errors;
 
 namespace UserManager.Application.Users.Queries.GetUser;

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserManager.Infrastructure.Identity;
-using ErrorOr;
 using MapsterMapper;
 using UserManager.Application.Common.Contracts.Authentication;
+using UserManager.Application.Common.DTOs.Authentication;
 using UserManager.Application.Common.Interfaces.Authentication;
-using UserManager.Domain.Common.Errors;
 
 namespace UserManager.Infrastructure.Services;
 
@@ -16,8 +15,6 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IMapper _mapper;
-    
-    private const string UserRole = "User";
 
     public IdentityService(
         UserManager<ApplicationUser> userManager,
@@ -33,50 +30,46 @@ public class IdentityService : IIdentityService
         _mapper = mapper;
     }
 
-    public async Task<ErrorOr<RegisterResponse>> RegisterUserAsync(RegisterRequest request)
+    public async Task<bool> UserByEmailExistsAsync(string email)
+        => await _userManager.FindByEmailAsync(email) is not null;
+
+    public async Task<bool> RoleExistsAsync(string name)
+        => await _roleManager.RoleExistsAsync(name);
+
+
+    public async Task<UserDto?> CreateUserAsync(RegisterRequest registerRequest, string password, string role)
     {
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        var role = await _roleManager.FindByNameAsync(UserRole);
-
-        if (user is not null)
-            return Errors.User.DuplicateEmail;
-
-        if (role is null)
-            return Errors.Role.RoleNotFound;
-
-        var newUser = _mapper.Map<ApplicationUser>(request);
-        newUser.UserName = request.Email;
-
-        var result = await _userManager.CreateAsync(newUser, request.Password);
+        var user = _mapper.Map<ApplicationUser>(registerRequest);
+        var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
-            return Errors.User.UserCouldNotBeCreated;
+            return null;
 
-        await _userManager.AddToRoleAsync(newUser, role.Name);
+        await _userManager.AddToRoleAsync(user, role);
 
-        return new RegisterResponse(UserId: newUser.Id);
+        return _mapper.Map<UserDto>(user);
     }
 
-    public async Task<ErrorOr<LoginResponse>> LoginUserAsync(LoginRequest request)
+    public async Task<UserDto?> LoginUserAsync(LoginRequest request)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
 
-        if (user is null)
-            return Errors.User.UserNotFound;
-
-        var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
+        var result = await _signInManager.PasswordSignInAsync(
+            user, request.Password, false, false);
 
         if (!result.Succeeded)
-            return Errors.Authentication.InvalidCredentials;
+            return null;
 
         var token = _jwtTokenGenerator.GenerateToken(user.Id, user.UserName, user.Email);
 
-        return new LoginResponse(
-            Id: user.Id,
-            Email: user.Email,
-            FirstName: user.FirstName ?? string.Empty,
-            LastName: user.LastName ?? string.Empty,
-            Token: token);
+        return new UserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            FirstName = user.FirstName ?? string.Empty,
+            LastName = user.LastName ?? string.Empty,
+            Token = token
+        };
     }
 
     public async Task<List<string>> GetRoles()

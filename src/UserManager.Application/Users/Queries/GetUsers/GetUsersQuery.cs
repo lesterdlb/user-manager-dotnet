@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using UserManager.Domain.Common.DTOs.User;
+using UserManager.Application.Common.DTOs.Authentication;
 
 namespace UserManager.Application.Users.Queries.GetUsers;
 
