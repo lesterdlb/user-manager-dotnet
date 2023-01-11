@@ -32,4 +32,4 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginRespon
 
         return _mapper.Map<LoginResponse>(user);
     }
-};
+}

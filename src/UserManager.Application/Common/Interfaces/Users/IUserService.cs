@@ -1,4 +1,4 @@
-﻿using UserManager.Domain.Common.DTOs.User;
+﻿using UserManager.Application.Common.DTOs.Authentication;
 
 namespace UserManager.Application.Common.Interfaces.Users;
 

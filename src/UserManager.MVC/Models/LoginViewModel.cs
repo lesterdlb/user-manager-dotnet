@@ -10,5 +10,4 @@ public record LoginViewModel
     [Required(ErrorMessage = "Password is required")]
     [DataType(DataType.Password)]
     string Password,
-    string? ReturnUrl
-);
+    string? ReturnUrl);

@@ -65,7 +65,7 @@ public class ApplicationDbContextInitializer
             await _roleManager.CreateAsync(adminRole);
             await _roleManager.CreateAsync(userRole);
         }
-        
+
         // Default users
         var adminUser = new ApplicationUser
         {
@@ -77,7 +77,7 @@ public class ApplicationDbContextInitializer
             PhoneNumber = "1234567890",
             PhoneNumberConfirmed = true
         };
-        
+
         var user = new ApplicationUser
         {
             UserName = "user",

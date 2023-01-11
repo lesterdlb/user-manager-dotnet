@@ -6,11 +6,12 @@ namespace UserManager.MVC.Services.Base;
 public class BaseHttpService
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly IClient _client;
+
+    protected IClient Client { get; }
 
     protected BaseHttpService(IClient client, ILocalStorageService localStorageService)
     {
-        _client = client;
+        Client = client;
         _localStorageService = localStorageService;
     }
 
@@ -30,9 +31,11 @@ public class BaseHttpService
     protected void AddBearerToken()
     {
         if (_localStorageService.Exists("token"))
-            _client.HttpClient.DefaultRequestHeaders.Authorization =
+        {
+            Client.HttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue(
                     "Bearer",
                     _localStorageService.GetStorageValue<string>("token"));
+        }
     }
 }

@@ -2,6 +2,13 @@
 
 public enum Roles
 {
+    /// <summary>
+    /// Represents an administrator role.
+    /// </summary>
     Admin,
-    User,
+
+    /// <summary>
+    /// Represents a normal user role.
+    /// </summary>
+    User
 }

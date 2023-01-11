@@ -1,7 +1,9 @@
-﻿using MediatR;
-using UserManager.Application.Common.Interfaces.Users;
-using ErrorOr;
+﻿using ErrorOr;
+
+using MediatR;
+
 using UserManager.Application.Common.DTOs.Authentication;
+using UserManager.Application.Common.Interfaces.Users;
 using UserManager.Domain.Common.Errors;
 
 namespace UserManager.Application.Users.Queries.GetUser;
@@ -24,4 +26,4 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto
 
         return user;
     }
-};
+}

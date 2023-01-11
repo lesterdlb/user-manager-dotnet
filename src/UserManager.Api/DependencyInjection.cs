@@ -53,7 +53,8 @@ public static class DependencyInjection
                 }
             });
 
-            options.SwaggerDoc("v1",
+            options.SwaggerDoc(
+                "v1",
                 new OpenApiInfo { Title = "UserManager", Version = "v1" });
         });
     }
@@ -62,7 +63,8 @@ public static class DependencyInjection
     {
         services.AddCors(options =>
         {
-            options.AddPolicy(CorsPolicy,
+            options.AddPolicy(
+                CorsPolicy,
                 policyBuilder => policyBuilder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());

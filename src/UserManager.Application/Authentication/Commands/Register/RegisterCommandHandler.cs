@@ -23,7 +23,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
         var userExists = await _identityService.UserByEmailExistsAsync(command.Request.Email);
         var roleExists = await _identityService.RoleExistsAsync("User");
 
-        if (!userExists)
+        if (userExists)
             return Errors.User.DuplicateEmail;
 
         if (!roleExists)

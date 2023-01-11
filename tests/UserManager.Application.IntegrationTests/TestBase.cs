@@ -1,9 +1,6 @@
-﻿using UserManager.Application.IntegrationTests.Integration;
+﻿using static UserManager.Application.IntegrationTests.Integration.IntegrationFixture;
 
 namespace UserManager.Application.IntegrationTests;
-
-using static IntegrationFixture;
-
 public class TestBase : IAsyncLifetime
 {
     public async Task InitializeAsync()

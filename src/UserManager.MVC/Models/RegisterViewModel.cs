@@ -13,5 +13,4 @@ public record RegisterViewModel
     string UserName,
     [Required(ErrorMessage = "Password is required")]
     [DataType(DataType.Password)]
-    string Password
-);
+    string Password);

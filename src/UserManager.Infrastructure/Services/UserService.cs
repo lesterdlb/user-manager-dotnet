@@ -1,9 +1,11 @@
 ﻿using MapsterMapper;
-using UserManager.Application.Common.Interfaces.Users;
-using UserManager.Infrastructure.Identity;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using UserManager.Domain.Common.DTOs.User;
+
+using UserManager.Application.Common.DTOs.Authentication;
+using UserManager.Application.Common.Interfaces.Users;
+using UserManager.Infrastructure.Identity;
 
 namespace UserManager.Infrastructure.Services;
 
@@ -21,7 +23,7 @@ public class UserService : IUserService
     public async Task<UserDto?> GetUserAsync(string userId)
     {
         var appUser = await _userManager.FindByIdAsync(userId);
-        return _mapper.Map<UserDto>(appUser);
+        return appUser is null ? null : _mapper.Map<UserDto>(appUser);
     }
 
     public async Task<List<UserDto>> GetUsersAsync()

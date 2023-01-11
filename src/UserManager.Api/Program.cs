@@ -2,6 +2,7 @@ using UserManager.Api;
 using UserManager.Application;
 using UserManager.Infrastructure;
 using UserManager.Infrastructure.Persistence;
+
 using DependencyInjection = UserManager.Api.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,7 @@ var app = builder.Build();
         app.UseSwagger();
         app.UseSwaggerUI(options =>
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserManager v1"));
-        
+
         using var scope = app.Services.CreateScope();
         var initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
         await initializer.InitialiseAsync();
@@ -32,6 +33,6 @@ var app = builder.Build();
     app.UseCors(DependencyInjection.CorsPolicy);
     app.MapControllers();
     app.UseStaticFiles();
-    
+
     app.Run();
 }

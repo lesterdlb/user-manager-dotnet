@@ -1,5 +1,5 @@
-﻿using MediatR;
-using ErrorOr;
+﻿using ErrorOr;
+using MediatR;
 using UserManager.Application.Common.DTOs.Authentication;
 
 namespace UserManager.Application.Users.Queries.GetUser;

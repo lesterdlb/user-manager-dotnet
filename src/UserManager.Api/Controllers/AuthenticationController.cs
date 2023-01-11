@@ -25,11 +25,10 @@ public class AuthenticationController : ApiController
         var query = new LoginQuery(request);
 
         var result = await Mediator.Send(query);
-        
+
         return result.Match(
             Ok,
-            Problem
-        );
+            Problem);
     }
 
     [HttpPost("register")]
@@ -38,11 +37,10 @@ public class AuthenticationController : ApiController
         var command = new RegisterCommand(request);
 
         var result = await Mediator.Send(command);
-        
+
         return result.Match(
             Ok,
-            Problem
-        );
+            Problem);
     }
 
     [HttpGet("roles")]

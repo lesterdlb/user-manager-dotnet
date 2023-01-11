@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using UserManager.Application.Common.DTOs.Authentication;
 using UserManager.Application.Common.Interfaces.Users;
 
@@ -17,4 +18,4 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, List<UserDto>
     {
         return await _userService.GetUsersAsync();
     }
-};
+}

@@ -2,5 +2,5 @@
 
 public abstract class BaseDto
 {
-    public string Id { get; set; }
+    public string Id { get; set; } = null!;
 }
