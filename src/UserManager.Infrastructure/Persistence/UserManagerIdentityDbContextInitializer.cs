@@ -6,16 +6,16 @@ using UserManager.Infrastructure.Identity;
 
 namespace UserManager.Infrastructure.Persistence;
 
-public class ApplicationDbContextInitializer
+public class UserManagerIdentityDbContextInitializer
 {
-    private readonly ILogger<ApplicationDbContextInitializer> _logger;
-    private readonly ApplicationDbContext _context;
+    private readonly ILogger<UserManagerIdentityDbContextInitializer> _logger;
+    private readonly UserManagerIdentityDbContext _context;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public ApplicationDbContextInitializer(
-        ILogger<ApplicationDbContextInitializer> logger,
-        ApplicationDbContext context,
+    public UserManagerIdentityDbContextInitializer(
+        ILogger<UserManagerIdentityDbContextInitializer> logger,
+        UserManagerIdentityDbContext context,
         UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager)
     {

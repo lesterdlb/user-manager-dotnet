@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using UserManager.Application.Common.Contracts.Authentication;
-using UserManager.Application.Common.DTOs.Authentication;
+using UserManager.Application.Common.DTOs;
 using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Domain.Common.Errors;
 using UserManager.Infrastructure.Identity;
@@ -41,7 +41,8 @@ public class IdentityService : IIdentityService
     public async Task<bool> RoleExistsAsync(string name)
         => await _roleManager.RoleExistsAsync(name);
 
-    public async Task<ErrorOr<UserDto>> CreateUserAsync(RegisterRequest registerRequest, string password, string role)
+    public async Task<ErrorOr<RegisterResponse>> CreateUserAsync(
+        RegisterRequest registerRequest, string password, string role)
     {
         var user = _mapper.Map<ApplicationUser>(registerRequest);
         user.UserName = registerRequest.Email;
@@ -51,10 +52,10 @@ public class IdentityService : IIdentityService
 
         await _userManager.AddToRoleAsync(user, role);
 
-        return _mapper.Map<UserDto>(user);
+        return _mapper.Map<RegisterResponse>(user);
     }
 
-    public async Task<ErrorOr<UserDto>> LoginUserAsync(LoginRequest request)
+    public async Task<ErrorOr<LoginResponse>> LoginUserAsync(LoginRequest request)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -67,16 +68,19 @@ public class IdentityService : IIdentityService
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.UserName!, user.Email!, roles);
+        var token = _jwtTokenGenerator
+            .GenerateToken(new IdentityUserDto(
+                user.Id,
+                user.UserName!,
+                user.Email!,
+                roles));
 
-        return new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email!,
-            FirstName = user.FirstName ?? string.Empty,
-            LastName = user.LastName ?? string.Empty,
-            Token = token
-        };
+        return new LoginResponse(
+            user.Id,
+            user.Email!,
+            user.FirstName ?? string.Empty,
+            user.LastName ?? string.Empty,
+            token);
     }
 
     public async Task<List<string>> GetRoles()

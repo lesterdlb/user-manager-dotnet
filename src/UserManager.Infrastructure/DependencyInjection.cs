@@ -77,20 +77,20 @@ public static class DependencyInjection
 
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<UserManagerIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("UserManager"));
         }
         else
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<UserManagerIdentityDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                    builder => builder.MigrationsAssembly(typeof(UserManagerIdentityDbContext).Assembly.FullName)));
         }
 
         services.AddScoped<IApplicationDbContext>(
-            provider => provider.GetRequiredService<ApplicationDbContext>());
-        services.AddScoped<ApplicationDbContextInitializer>();
+            provider => provider.GetRequiredService<UserManagerIdentityDbContext>());
+        services.AddScoped<UserManagerIdentityDbContextInitializer>();
 
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -98,7 +98,7 @@ public static class DependencyInjection
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddEntityFrameworkStores<UserManagerIdentityDbContext>()
             .AddDefaultTokenProviders();
     }
 }

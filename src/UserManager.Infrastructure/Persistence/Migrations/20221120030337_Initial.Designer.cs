@@ -11,7 +11,7 @@ using UserManager.Infrastructure.Persistence;
 
 namespace UserManager.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(UserManagerIdentityDbContext))]
     [Migration("20221120030337_Initial")]
     partial class Initial
     {

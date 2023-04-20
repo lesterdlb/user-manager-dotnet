@@ -8,12 +8,12 @@ using UserManager.Infrastructure.Persistence.Interceptors;
 
 namespace UserManager.Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+public class UserManagerIdentityDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options,
+    public UserManagerIdentityDbContext(
+        DbContextOptions<UserManagerIdentityDbContext> options,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options)
     {

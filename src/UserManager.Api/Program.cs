@@ -22,7 +22,7 @@ var app = builder.Build();
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "UserManager v1"));
 
         using var scope = app.Services.CreateScope();
-        var initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        var initializer = scope.ServiceProvider.GetRequiredService<UserManagerIdentityDbContextInitializer>();
         await initializer.InitialiseAsync();
         await initializer.SeedAsync();
     }

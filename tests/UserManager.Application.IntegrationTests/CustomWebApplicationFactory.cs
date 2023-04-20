@@ -22,8 +22,8 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
                     u.UserId == Guid.NewGuid().ToString()));
 
             services
-                .Remove<DbContextOptions<ApplicationDbContext>>()
-                .AddDbContext<ApplicationDbContext>(options =>
+                .Remove<DbContextOptions<UserManagerIdentityDbContext>>()
+                .AddDbContext<UserManagerIdentityDbContext>(options =>
                     options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
         });
     }

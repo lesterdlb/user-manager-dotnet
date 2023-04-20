@@ -1,10 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
+using UserManager.Application.Common.DTOs;
 using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Application.Common.Interfaces.Services;
+
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace UserManager.Infrastructure.Authentication;
@@ -20,7 +24,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _jwtSettings = jwtOptions.Value;
     }
 
-    public string GenerateToken(string userId, string userName, string email, IEnumerable<string> roles)
+    public string GenerateToken(IdentityUserDto user)
     {
         var singingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
@@ -28,11 +32,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, userName),
+            new(JwtRegisteredClaimNames.Sub, user.UserName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, email),
-            new(ClaimTypes.Role, string.Join(",", roles)),
-            new("uid", userId)
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(ClaimTypes.Role, string.Join(",", user.Roles)),
+            new("uid", user.Id)
         };
 
         var securityToken = new JwtSecurityToken(

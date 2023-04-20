@@ -30,7 +30,7 @@ public class IntegrationFixture : IDisposable
     {
         using var scope = _scopeFactory.CreateScope();
 
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var context = scope.ServiceProvider.GetRequiredService<UserManagerIdentityDbContext>();
 
         await context.Database.EnsureDeletedAsync();
 

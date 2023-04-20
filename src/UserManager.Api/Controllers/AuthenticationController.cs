@@ -1,7 +1,10 @@
 ﻿using MapsterMapper;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using UserManager.Api.Controllers.Common;
 using UserManager.Application.Authentication.Commands.Register;
 using UserManager.Application.Authentication.Queries.Login;
@@ -26,9 +29,7 @@ public class AuthenticationController : ApiController
 
         var result = await Mediator.Send(query);
 
-        return result.Match(
-            Ok,
-            Problem);
+        return result.Match(Ok, Problem);
     }
 
     [HttpPost("register")]
@@ -38,9 +39,7 @@ public class AuthenticationController : ApiController
 
         var result = await Mediator.Send(command);
 
-        return result.Match(
-            Ok,
-            Problem);
+        return result.Match(Ok, Problem);
     }
 
     [HttpGet("roles")]
