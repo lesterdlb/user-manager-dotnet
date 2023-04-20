@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using UserManager.Infrastructure.Identity;
 
 namespace UserManager.Infrastructure.Persistence;
@@ -94,6 +95,9 @@ public class ApplicationDbContextInitializer
         {
             await _userManager.CreateAsync(adminUser, "123qwe");
             await _userManager.CreateAsync(user, "123qwe");
+
+            await _userManager.AddToRoleAsync(adminUser, adminRole.Name!);
+            await _userManager.AddToRoleAsync(user, userRole.Name!);
         }
     }
 }

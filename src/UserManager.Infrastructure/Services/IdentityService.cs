@@ -1,7 +1,10 @@
 ﻿using ErrorOr;
+
 using MapsterMapper;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using UserManager.Application.Common.Contracts.Authentication;
 using UserManager.Application.Common.DTOs.Authentication;
 using UserManager.Application.Common.Interfaces.Authentication;
@@ -62,7 +65,9 @@ public class IdentityService : IIdentityService
 
         if (!result.Succeeded) return Errors.Authentication.AuthenticationFailed;
 
-        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.UserName!, user.Email!);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.UserName!, user.Email!, roles);
 
         return new UserDto
         {

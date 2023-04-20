@@ -20,7 +20,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         _jwtSettings = jwtOptions.Value;
     }
 
-    public string GenerateToken(string userId, string userName, string email)
+    public string GenerateToken(string userId, string userName, string email, IEnumerable<string> roles)
     {
         var singingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)),
@@ -31,6 +31,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new(JwtRegisteredClaimNames.Sub, userName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, email),
+            new(ClaimTypes.Role, string.Join(",", roles)),
             new("uid", userId)
         };
 
