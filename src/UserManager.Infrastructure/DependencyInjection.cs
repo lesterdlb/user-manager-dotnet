@@ -1,13 +1,17 @@
 ﻿using System.Reflection;
 using System.Text;
+
 using Mapster;
+
 using MapsterMapper;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+
 using UserManager.Application.Common.Interfaces;
 using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Application.Common.Interfaces.Services;
@@ -22,9 +26,7 @@ namespace UserManager.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
@@ -55,11 +57,10 @@ public static class DependencyInjection
                     ValidIssuer = configuration["JwtSettings:Issuer"],
                     ValidAudience = configuration["JwtSettings:Audience"],
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"] ?? string.Empty))
+                        new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"] ?? string.Empty))
                 };
             });
-
-        return services;
     }
 
     private static void AddMapping(IServiceCollection services)

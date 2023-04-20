@@ -10,6 +10,10 @@ public static partial class Errors
             code: "invalid.credentials",
             description: "Invalid credentials");
 
+        public static Error AuthenticationFailed => Error.Validation(
+            code: "authentication.failed",
+            description: "Authentication failed");
+
         public static Error InvalidToken => Error.Validation(
             code: "invalid.token",
             description: "Invalid token");

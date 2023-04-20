@@ -9,5 +9,5 @@ public static class Extensions
         entry.References.Any(r =>
             r.TargetEntry != null &&
             r.TargetEntry.Metadata.IsOwned() &&
-            (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
+            r.TargetEntry.State is EntityState.Added or EntityState.Modified);
 }

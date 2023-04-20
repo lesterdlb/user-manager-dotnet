@@ -8,7 +8,7 @@ public interface IIdentityService
 {
     Task<bool> UserByEmailExistsAsync(string email);
     Task<bool> RoleExistsAsync(string name);
-    Task<UserDto?> CreateUserAsync(RegisterRequest registerRequest, string password, string role);
-    Task<UserDto?> LoginUserAsync(LoginRequest request);
+    Task<ErrorOr<UserDto>> CreateUserAsync(RegisterRequest registerRequest, string password, string role);
+    Task<ErrorOr<UserDto>> LoginUserAsync(LoginRequest request);
     Task<List<string>> GetRoles();
 }
