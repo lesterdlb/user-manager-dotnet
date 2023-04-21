@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
 using UserManager.Application.Common.Contracts.Authentication;
-using UserManager.Application.Common.DTOs.Authentication;
 
 namespace UserManager.Application.Common.Interfaces.Authentication;
 

@@ -1,4 +1,4 @@
-﻿namespace UserManager.Application.Common.DTOs.Authentication;
+﻿namespace UserManager.Application.Common.DTOs.User;
 
 public class UserDto : BaseDto
 {
@@ -7,5 +7,4 @@ public class UserDto : BaseDto
     public string Email { get; set; } = null!;
     public Uri? ProfilePicture { get; set; }
     public IEnumerable<string> Roles { get; set; } = null!;
-    public string? Token { get; set; }
 }

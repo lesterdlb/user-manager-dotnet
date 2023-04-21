@@ -2,27 +2,26 @@
 
 using MediatR;
 
-using UserManager.Application.Common.DTOs.Authentication;
+using UserManager.Application.Common.DTOs.User;
 using UserManager.Application.Common.Interfaces.Users;
 using UserManager.Domain.Common.Errors;
 
-namespace UserManager.Application.Users.Queries.GetUser;
+namespace UserManager.Application.Features.Users.Queries.GetUser;
 
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto>>
 {
-    private readonly IUserService _userService;
+    private readonly IUserRepository _userRepository;
 
-    public GetUserQueryHandler(IUserService userService)
+    public GetUserQueryHandler(IUserRepository userRepository)
     {
-        _userService = userService;
+        _userRepository = userRepository;
     }
 
     public async Task<ErrorOr<UserDto>> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetUserAsync(query.Id);
+        var user = await _userRepository.GetUserAsync(new Guid(query.Id));
 
-        if (user is null)
-            return Errors.User.UserNotFound;
+        if (user is null) return Errors.User.UserNotFound;
 
         return user;
     }

@@ -20,6 +20,7 @@ using UserManager.Infrastructure.Authentication;
 using UserManager.Infrastructure.Identity;
 using UserManager.Infrastructure.Persistence;
 using UserManager.Infrastructure.Persistence.Interceptors;
+using UserManager.Infrastructure.Repositories;
 using UserManager.Infrastructure.Services;
 
 namespace UserManager.Infrastructure;
@@ -36,7 +37,7 @@ public static class DependencyInjection
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<IIdentityService, IdentityService>();
 
-        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
