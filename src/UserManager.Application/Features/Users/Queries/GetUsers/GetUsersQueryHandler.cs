@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 using UserManager.Application.Common.DTOs.User;
-using UserManager.Application.Common.Interfaces.Users;
+using UserManager.Application.Common.Interfaces.Repositories;
 
 namespace UserManager.Application.Features.Users.Queries.GetUsers;
 

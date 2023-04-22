@@ -3,7 +3,7 @@
 using MediatR;
 
 using UserManager.Application.Common.DTOs.User;
-using UserManager.Application.Common.Interfaces.Users;
+using UserManager.Application.Common.Interfaces.Repositories;
 using UserManager.Domain.Common.Errors;
 
 namespace UserManager.Application.Features.Users.Queries.GetUser;

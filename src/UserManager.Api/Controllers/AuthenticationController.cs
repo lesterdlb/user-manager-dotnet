@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using UserManager.Api.Controllers.Common;
-using UserManager.Application.Authentication.Commands.Register;
 using UserManager.Application.Authentication.Queries.Login;
-using UserManager.Application.Authentication.Queries.Roles;
 using UserManager.Application.Common.Contracts.Authentication;
+using UserManager.Application.Features.Authentication.Commands.Register;
 
 namespace UserManager.Api.Controllers;
 
@@ -40,11 +39,5 @@ public class AuthenticationController : ApiController
         var result = await Mediator.Send(command);
 
         return result.Match(Ok, Problem);
-    }
-
-    [HttpGet("roles")]
-    public async Task<ActionResult<List<string>>> Roles()
-    {
-        return Ok(await Mediator.Send(new GetRolesQuery()));
     }
 }
