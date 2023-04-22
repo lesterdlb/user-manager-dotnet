@@ -1,6 +1,6 @@
 ﻿using UserManager.Application.Common.DTOs.User;
 
-namespace UserManager.Application.Common.Interfaces.Users;
+namespace UserManager.Application.Common.Interfaces.Repositories;
 
 public interface IUserRepository
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using UserManager.Application.Common.DTOs.User;
-using UserManager.Application.Common.Interfaces.Users;
+using UserManager.Application.Common.Interfaces.Repositories;
 using UserManager.Infrastructure.Identity;
 
 namespace UserManager.Infrastructure.Repositories;
@@ -28,7 +28,16 @@ public class UserRepository : IUserRepository
 
     public async Task<List<UserDto>> GetUsersAsync()
     {
-        var users = await _userManager.Users.ToListAsync();
+        var users = await _userManager.Users.Select(u => new UserDto
+        {
+            Id = u.Id,
+            Email = u.Email ?? string.Empty,
+            FirstName = u.FirstName ?? string.Empty,
+            LastName = u.LastName ?? string.Empty,
+            ProfilePicture = u.ProfilePicture,
+            Roles = _userManager.GetRolesAsync(u).Result
+        }).ToListAsync();
+
         return _mapper.Map<List<UserDto>>(users);
     }
 
