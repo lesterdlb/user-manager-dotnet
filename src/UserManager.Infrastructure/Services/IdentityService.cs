@@ -3,7 +3,6 @@
 using MapsterMapper;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 using UserManager.Application.Common.Contracts.Authentication;
 using UserManager.Application.Common.DTOs;
@@ -37,9 +36,6 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> UserByEmailExistsAsync(string email)
         => await _userManager.FindByEmailAsync(email) is not null;
-
-    public async Task<bool> RoleExistsAsync(string name)
-        => await _roleManager.RoleExistsAsync(name);
 
     public async Task<ErrorOr<RegisterResponse>> CreateUserAsync(
         RegisterRequest registerRequest, string password, string role)
@@ -81,11 +77,5 @@ public class IdentityService : IIdentityService
             user.FirstName ?? string.Empty,
             user.LastName ?? string.Empty,
             token);
-    }
-
-    public async Task<List<string>> GetRoles()
-    {
-        var roles = await _roleManager.Roles.ToListAsync();
-        return roles.Select(x => x.Name).ToList()!;
     }
 }
