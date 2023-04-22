@@ -14,8 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 
 using UserManager.Application.Common.Interfaces;
 using UserManager.Application.Common.Interfaces.Authentication;
+using UserManager.Application.Common.Interfaces.Repositories;
 using UserManager.Application.Common.Interfaces.Services;
-using UserManager.Application.Common.Interfaces.Users;
 using UserManager.Infrastructure.Authentication;
 using UserManager.Infrastructure.Identity;
 using UserManager.Infrastructure.Persistence;
@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
