@@ -54,8 +54,9 @@ public class RoleRepository : IRoleRepository
         throw new NotImplementedException();
     }
 
-    public Task DeleteRoleAsync(Guid roleId)
+    public async Task DeleteRoleAsync(Guid roleId)
     {
-        throw new NotImplementedException();
+        var appRole = await _roleManager.FindByIdAsync(roleId.ToString());
+        await _roleManager.DeleteAsync(appRole!);
     }
 }
