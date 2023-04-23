@@ -9,6 +9,7 @@ using UserManager.Api.Controllers.Common;
 using UserManager.Application.Common.DTOs.Role;
 using UserManager.Application.Features.Roles.Commands.CreateRole;
 using UserManager.Application.Features.Roles.Commands.DeleteRole;
+using UserManager.Application.Features.Roles.Commands.UpdateRole;
 using UserManager.Application.Features.Roles.Queries.GetRole;
 using UserManager.Application.Features.Roles.Queries.GetRoles;
 
@@ -43,21 +44,31 @@ public class RolesController : ApiController
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto roleDto)
+    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateBaseRoleCommand createBaseRoleCommand)
     {
-        var createRoleCommand = new CreateRoleCommand(roleDto);
-        var result = await Mediator.Send(createRoleCommand);
+        var result = await Mediator.Send(createBaseRoleCommand);
 
         return result.Match(id => Ok(id), Problem);
     }
 
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> Update([FromBody] UpdateRoleCommand updateRoleCommand)
+    {
+        var result = await Mediator.Send(updateRoleCommand);
+
+        return result.Match(_ => NoContent(), Problem);
+    }
+
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> Delete(Guid id)
     {
         var deleteRoleCommand = new DeleteRoleCommand(id);
         var result = await Mediator.Send(deleteRoleCommand);
 
-        return result.Match(_ => Ok(), Problem);
+        return result.Match(_ => NoContent(), Problem);
     }
 }

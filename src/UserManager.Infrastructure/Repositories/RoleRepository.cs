@@ -27,7 +27,9 @@ public class RoleRepository : IRoleRepository
 
     public async Task<List<RoleDto>> GetRolesAsync()
     {
-        var roles = await _roleManager.Roles.Select(r => new RoleDto { Id = r.Id, Name = r.Name ?? string.Empty, })
+        var roles = await _roleManager.Roles
+            .Select(r => new RoleDto { Id = r.Id, Name = r.Name ?? string.Empty, })
+            .OrderBy(r => r.Name)
             .ToListAsync();
 
         return _mapper.Map<List<RoleDto>>(roles);
@@ -43,15 +45,30 @@ public class RoleRepository : IRoleRepository
 
         if (!result.Succeeded)
         {
-            throw new ApplicationException($"Unable to create user: {result.Errors.FirstOrDefault()?.Description}");
+            throw new ApplicationException($"Unable to create role: {result.Errors.FirstOrDefault()?.Description}");
         }
 
         return _mapper.Map<RoleDto>(appRole);
     }
 
-    public Task<RoleDto> UpdateRoleAsync(RoleDto role)
+    public async Task<RoleDto> UpdateRoleAsync(RoleDto role)
     {
-        throw new NotImplementedException();
+        var appRole = await _roleManager.FindByIdAsync(role.Id);
+
+        if (appRole is null)
+        {
+            throw new ApplicationException($"Unable to find role with id: {role.Id}");
+        }
+
+        appRole.Name = role.Name;
+        var result = await _roleManager.UpdateAsync(appRole);
+
+        if (!result.Succeeded)
+        {
+            throw new ApplicationException($"Unable to update role: {result.Errors.FirstOrDefault()?.Description}");
+        }
+
+        return _mapper.Map<RoleDto>(appRole);
     }
 
     public async Task DeleteRoleAsync(Guid roleId)

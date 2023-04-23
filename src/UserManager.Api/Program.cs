@@ -27,10 +27,14 @@ var app = builder.Build();
         await initializer.SeedAsync();
     }
 
-    app.UseAuthentication();
     app.UseHttpsRedirection();
-    app.UseAuthorization();
+    app.UseRouting();
+    app.UseAuthentication();
+
+    app.UseExceptionHandler();
+
     app.UseCors(DependencyInjection.CorsPolicy);
+    app.UseAuthorization();
     app.MapControllers();
     app.UseStaticFiles();
 

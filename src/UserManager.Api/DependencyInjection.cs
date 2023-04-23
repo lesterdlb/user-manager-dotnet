@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+
 using UserManager.Api.Services;
 using UserManager.Application.Common.Interfaces.Services;
 
@@ -8,8 +9,9 @@ public static class DependencyInjection
 {
     public const string CorsPolicy = "CorsPolicy";
 
-    public static IServiceCollection AddApi(this IServiceCollection services)
+    public static void AddApi(this IServiceCollection services)
     {
+        services.AddProblemDetails();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
 
@@ -17,8 +19,6 @@ public static class DependencyInjection
 
         AddSwagger(services);
         AddCors(services);
-
-        return services;
     }
 
     private static void AddSwagger(IServiceCollection services)
@@ -40,11 +40,7 @@ public static class DependencyInjection
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
+                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
                         Scheme = "oauth2",
                         Name = "Bearer",
                         In = ParameterLocation.Header,
