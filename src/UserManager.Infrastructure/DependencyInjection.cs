@@ -77,23 +77,12 @@ public static class DependencyInjection
     {
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
-        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-        {
-            services.AddDbContext<UserManagerIdentityDbContext>(options =>
-                options.UseInMemoryDatabase("UserManager"));
-        }
-        else
-        {
-            services.AddDbContext<UserManagerIdentityDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(UserManagerIdentityDbContext).Assembly.FullName)));
-        }
+        services.AddDbContext<UserManagerIdentityDbContext>(options =>
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection"),
+                builder => builder.MigrationsAssembly(typeof(UserManagerIdentityDbContext).Assembly.FullName)));
 
-        services.AddScoped<IApplicationDbContext>(
-            provider => provider.GetRequiredService<UserManagerIdentityDbContext>());
         services.AddScoped<UserManagerIdentityDbContextInitializer>();
-
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireUppercase = false;

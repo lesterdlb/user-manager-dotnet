@@ -1,24 +1,82 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 using UserManager.Api.Services;
+using UserManager.Application;
 using UserManager.Application.Common.Interfaces.Services;
+using UserManager.Infrastructure;
+using UserManager.Infrastructure.Persistence;
 
 namespace UserManager.Api;
 
 public static class DependencyInjection
 {
-    public const string CorsPolicy = "CorsPolicy";
+    private const string CorsPolicy = "CorsPolicy";
 
-    public static void AddApi(this IServiceCollection services)
+    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        services.AddProblemDetails();
-        services.AddControllers();
-        services.AddEndpointsApiExplorer();
+        AddSwagger(builder.Services);
 
-        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        builder.Services.AddApplication();
+        builder.Services.AddInfrastructure(builder.Configuration);
 
-        AddSwagger(services);
-        AddCors(services);
+        builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        builder.Services.AddProblemDetails();
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+
+        AddCors(builder.Services);
+
+        return builder.Build();
+    }
+
+    public static WebApplication ConfigurePipeline(this WebApplication app)
+    {
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint(
+                    "/swagger/v1/swagger.json",
+                    "User Management API");
+            });
+        }
+
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseAuthentication();
+
+        app.UseExceptionHandler();
+
+        app.UseCors(CorsPolicy);
+        app.UseAuthorization();
+        app.MapControllers();
+        app.UseStaticFiles();
+
+        return app;
+    }
+
+    public static async Task ResetDatabaseAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        try
+        {
+            var context = scope.ServiceProvider.GetService<UserManagerIdentityDbContext>();
+            var initializer = scope.ServiceProvider.GetRequiredService<UserManagerIdentityDbContextInitializer>();
+
+            if (context is not null && !context.Database.IsInMemory())
+            {
+                await context.Database.EnsureDeletedAsync();
+                await initializer.InitialiseAsync();
+                await initializer.SeedAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
+            logger.LogError(ex, "An error occurred while migrating the database.");
+        }
     }
 
     private static void AddSwagger(IServiceCollection services)
