@@ -19,10 +19,10 @@ public class GetRoleQueryHandler : IRequestHandler<GetRoleQuery, ErrorOr<RoleDto
 
     public async Task<ErrorOr<RoleDto>> Handle(GetRoleQuery query, CancellationToken cancellationToken)
     {
-        var user = await _roleRepository.GetRoleAsync(new Guid(query.Id));
+        var role = await _roleRepository.GetRoleAsync(new Guid(query.Id));
 
-        if (user is null) return Errors.User.UserNotFound;
+        if (role is null) return Errors.Role.RoleNotFound;
 
-        return user;
+        return role;
     }
 }

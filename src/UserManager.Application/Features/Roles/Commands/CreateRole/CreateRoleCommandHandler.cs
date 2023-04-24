@@ -7,7 +7,7 @@ using UserManager.Application.Common.Interfaces.Repositories;
 
 namespace UserManager.Application.Features.Roles.Commands.CreateRole;
 
-public class CreateRoleCommandHandler : IRequestHandler<CreateBaseRoleCommand, ErrorOr<Guid>>
+public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, ErrorOr<Guid>>
 {
     private readonly IRoleRepository _roleRepository;
 
@@ -16,7 +16,7 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateBaseRoleCommand, E
         _roleRepository = roleRepository;
     }
 
-    public async Task<ErrorOr<Guid>> Handle(CreateBaseRoleCommand command, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Guid>> Handle(CreateRoleCommand command, CancellationToken cancellationToken)
     {
         var role = await _roleRepository.CreateRoleAsync(new CreateRoleDto(command.Name));
 
