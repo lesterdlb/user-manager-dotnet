@@ -42,7 +42,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         out TResponse response)
     {
         var errors = validationFailures.ConvertAll(x => Error.Validation(
-            code: x.PropertyName,
+            code: x.ErrorCode,
             description: x.ErrorMessage));
 
         response = (TResponse?)typeof(TResponse)

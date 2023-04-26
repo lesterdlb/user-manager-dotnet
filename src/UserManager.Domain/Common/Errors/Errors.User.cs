@@ -10,7 +10,7 @@ public static partial class Errors
             code: "user.could.not.be.created",
             description: "User could not be created");
 
-        public static Error UserNotFound => Error.Conflict(
+        public static Error UserNotFound => Error.NotFound(
             code: "user.not.found",
             description: "User not found");
 

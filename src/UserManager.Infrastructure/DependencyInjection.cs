@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-using UserManager.Application.Common.Interfaces;
 using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Application.Common.Interfaces.Repositories;
 using UserManager.Application.Common.Interfaces.Services;

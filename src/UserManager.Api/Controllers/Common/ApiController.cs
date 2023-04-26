@@ -24,6 +24,11 @@ public abstract class ApiController : ControllerBase
     protected ISender Mediator { get; }
     protected IMapper Mapper { get; }
 
+    protected CreatedAtActionResult CreatedAtActionResult<T>(Guid id, T dto, string actionName)
+    {
+        return CreatedAtAction(actionName: actionName, routeValues: new { id }, value: dto);
+    }
+
     protected ActionResult Problem(List<Error> errors)
     {
         if (errors.Count is 0) return Problem();
