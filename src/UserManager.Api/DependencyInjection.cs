@@ -57,28 +57,6 @@ public static class DependencyInjection
         return app;
     }
 
-    public static async Task ResetDatabaseAsync(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        try
-        {
-            var context = scope.ServiceProvider.GetService<UserManagerIdentityDbContext>();
-            var initializer = scope.ServiceProvider.GetRequiredService<UserManagerIdentityDbContextInitializer>();
-
-            if (context is not null && !context.Database.IsInMemory())
-            {
-                await context.Database.EnsureDeletedAsync();
-                await initializer.InitialiseAsync();
-                await initializer.SeedAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger>();
-            logger.LogError(ex, "An error occurred while migrating the database.");
-        }
-    }
-
     private static void AddSwagger(IServiceCollection services)
     {
         services.AddSwaggerGen(options =>

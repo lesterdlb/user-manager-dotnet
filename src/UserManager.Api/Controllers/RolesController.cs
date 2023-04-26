@@ -15,8 +15,7 @@ using UserManager.Application.Features.Roles.Queries.GetRoles;
 
 namespace UserManager.Api.Controllers;
 
-// [Authorize(Roles = "Admin")]
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public class RolesController : ApiController
 {
     public RolesController(IMapper mapper, ISender mediator)
@@ -25,6 +24,7 @@ public class RolesController : ApiController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllRoles()
     {
@@ -35,6 +35,7 @@ public class RolesController : ApiController
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RoleDto>> GetRoleById(Guid id)
     {
         var result = await Mediator.Send(new GetRoleQuery(id.ToString()));
@@ -43,12 +44,15 @@ public class RolesController : ApiController
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateBaseRoleCommand createBaseRoleCommand)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleCommand createRoleCommand)
     {
-        var result = await Mediator.Send(createBaseRoleCommand);
+        var result = await Mediator.Send(createRoleCommand);
 
-        return result.Match(id => Ok(id), Problem);
+        return result.Match(
+            id => CreatedAtActionResult(id, createRoleCommand, nameof(GetRoleById)),
+            Problem);
     }
 
     [HttpPut]
