@@ -1,5 +1,9 @@
 ﻿using ErrorOr;
 
+using Mapster;
+
+using MapsterMapper;
+
 using Moq;
 
 using Shouldly;
@@ -15,16 +19,19 @@ namespace UserManager.Application.UnitTests.Roles.Queries;
 public class GetRoleQueryHandlerTests
 {
     private readonly Mock<IRoleRepository> _roleRepository;
+    private readonly IMapper _mapper;
 
     public GetRoleQueryHandlerTests()
     {
-        _roleRepository = Mocks.RepositoryMocks.GetRoleRepository();
+        _roleRepository = RepositoryMocks.GetRoleRepository();
+        var config = new TypeAdapterConfig();
+        _mapper = new Mapper(config);
     }
 
     [Fact]
     public async Task GetRoleTest()
     {
-        var handler = new GetRoleQueryHandler(_roleRepository.Object);
+        var handler = new GetRoleQueryHandler(_roleRepository.Object, _mapper);
         var query = new GetRoleQuery(RepositoryMocks.GetUserRoleId());
 
         var result = await handler.Handle(query, CancellationToken.None);
@@ -37,7 +44,7 @@ public class GetRoleQueryHandlerTests
     [Fact]
     public async Task GetRoleTest_InvalidId()
     {
-        var handler = new GetRoleQueryHandler(_roleRepository.Object);
+        var handler = new GetRoleQueryHandler(_roleRepository.Object, _mapper);
         var query = new GetRoleQuery("00000000-0000-0000-0000-000000000000");
 
         var result = await handler.Handle(query, CancellationToken.None);

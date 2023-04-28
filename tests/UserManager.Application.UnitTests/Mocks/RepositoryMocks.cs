@@ -1,7 +1,7 @@
 ﻿using Moq;
 
-using UserManager.Application.Common.DTOs.Role;
 using UserManager.Application.Common.Interfaces.Repositories;
+using UserManager.Domain.Entities;
 
 namespace UserManager.Application.UnitTests.Mocks;
 
@@ -17,38 +17,38 @@ public class RepositoryMocks
 
     public static Mock<IRoleRepository> GetRoleRepository()
     {
-        var roles = new List<RoleDto>
+        var roles = new List<Role>
         {
-            new() { Id = AdminRoleId, Name = "Admin" },
-            new() { Id = UserRoleId, Name = "User" },
-            new() { Id = GuestRoleId, Name = "Guest" },
+            new TestRole(Guid.Parse(AdminRoleId)) { Name = "Admin" },
+            new TestRole(Guid.Parse(UserRoleId)) { Name = "User" },
+            new TestRole(Guid.Parse(GuestRoleId)) { Name = "Guest" }
         };
 
         var mockRoleRepository = new Mock<IRoleRepository>();
-        mockRoleRepository.Setup(repo => repo.GetRolesAsync())
+        mockRoleRepository.Setup(repo => repo.GetAllAsync())
             .ReturnsAsync(roles);
 
-        mockRoleRepository.Setup(repo => repo.GetRoleAsync(It.IsAny<Guid>()))
+        mockRoleRepository.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))
             .ReturnsAsync(
                 (Guid roleId) =>
                 {
-                    return roles.FirstOrDefault(role => Guid.Parse(role.Id) == roleId);
+                    return roles.FirstOrDefault(role => role.Id == roleId);
                 });
 
         mockRoleRepository.Setup(
-                repo => repo.CreateRoleAsync(It.IsAny<CreateRoleDto>()))
+                repo => repo.AddAsync(It.IsAny<Role>()))
             .ReturnsAsync(
-                (CreateRoleDto role) =>
+                (Role role) =>
                 {
-                    var newRole = new RoleDto { Id = NewRoleId, Name = role.Name };
+                    var newRole = new TestRole(Guid.Parse(NewRoleId)) { Name = role.Name };
                     roles.Add(newRole);
                     return newRole;
                 });
 
         mockRoleRepository.Setup(
-                repo => repo.UpdateRoleAsync(It.IsAny<RoleDto>()))
-            .ReturnsAsync(
-                (RoleDto role) =>
+                repo => repo.UpdateAsync(It.IsAny<Role>()))
+            .Callback(
+                (Role role) =>
                 {
                     var existingRole = roles.FirstOrDefault(r => r.Id == role.Id);
                     if (existingRole is null)
@@ -57,15 +57,14 @@ public class RepositoryMocks
                     }
 
                     existingRole.Name = role.Name;
-                    return existingRole;
                 });
 
         mockRoleRepository.Setup(
-                repo => repo.DeleteRoleAsync(It.IsAny<Guid>()))
+                repo => repo.DeleteAsync(It.IsAny<Guid>()))
             .Callback(
                 (Guid roleId) =>
                 {
-                    var existingRole = roles.FirstOrDefault(role => Guid.Parse(role.Id) == roleId);
+                    var existingRole = roles.FirstOrDefault(role => role.Id == roleId);
                     if (existingRole != null) roles.Remove(existingRole);
                 });
 

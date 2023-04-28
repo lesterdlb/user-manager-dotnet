@@ -29,7 +29,7 @@ public class DeleteRoleCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.Value.ShouldBe(Unit.Value);
-        _roleRepository.Verify(x => x.DeleteRoleAsync(It.IsAny<Guid>()), Times.Once);
+        _roleRepository.Verify(x => x.DeleteAsync(It.IsAny<Guid>()), Times.Once);
     }
 
     [Fact]
@@ -42,6 +42,6 @@ public class DeleteRoleCommandHandlerTests
 
         result.IsError.ShouldBe(true);
         result.FirstError.ShouldBeOfType(Errors.Role.RoleNotFound.GetType());
-        _roleRepository.Verify(x => x.GetRoleAsync(Guid.Empty), Times.Once);
+        _roleRepository.Verify(x => x.GetByIdAsync(Guid.Empty), Times.Once);
     }
 }

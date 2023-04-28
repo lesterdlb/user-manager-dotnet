@@ -4,11 +4,11 @@ using Moq;
 
 using Shouldly;
 
-using UserManager.Application.Common.DTOs.Role;
 using UserManager.Application.Common.Interfaces.Repositories;
 using UserManager.Application.Features.Roles.Commands.UpdateRole;
 using UserManager.Application.UnitTests.Mocks;
 using UserManager.Domain.Common.Errors;
+using UserManager.Domain.Entities;
 
 namespace UserManager.Application.UnitTests.Roles.Commands;
 
@@ -30,8 +30,8 @@ public class UpdateRoleCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.Value.ShouldBe(Unit.Value);
-        _roleRepository.Verify(x => x.GetRoleAsync(Guid.Parse(RepositoryMocks.GetUserRoleId())), Times.Once);
-        _roleRepository.Verify(x => x.UpdateRoleAsync(It.IsAny<RoleDto>()), Times.Once);
+        _roleRepository.Verify(x => x.GetByIdAsync(Guid.Parse(RepositoryMocks.GetUserRoleId())), Times.Once);
+        _roleRepository.Verify(x => x.UpdateAsync(It.IsAny<Role>()), Times.Once);
     }
 
     [Fact]
@@ -44,6 +44,6 @@ public class UpdateRoleCommandHandlerTests
 
         result.IsError.ShouldBe(true);
         result.FirstError.ShouldBeOfType(Errors.Role.RoleNotFound.GetType());
-        _roleRepository.Verify(x => x.GetRoleAsync(Guid.Empty), Times.Once);
+        _roleRepository.Verify(x => x.GetByIdAsync(Guid.Empty), Times.Once);
     }
 }
