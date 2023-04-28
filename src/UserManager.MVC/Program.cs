@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
         .AddCookie();
 
     builder.Services.AddHttpClient<IClient, Client>(options =>
-        options.BaseAddress = new Uri("https://localhost:44372/"));
+        options.BaseAddress = new Uri("https://localhost:7039/"));
 
     // Services
     builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
