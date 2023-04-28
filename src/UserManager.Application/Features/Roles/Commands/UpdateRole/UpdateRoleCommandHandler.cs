@@ -18,12 +18,12 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Error
 
     public async Task<ErrorOr<Unit>> Handle(UpdateRoleCommand command, CancellationToken cancellationToken)
     {
-        var role = await _roleRepository.GetRoleAsync(command.Id);
+        var role = await _roleRepository.GetByIdAsync(command.Id);
 
         if (role is null) return Errors.Role.RoleNotFound;
 
         role.Name = command.Name;
-        await _roleRepository.UpdateRoleAsync(role);
+        await _roleRepository.UpdateAsync(role);
 
         return Unit.Value;
     }

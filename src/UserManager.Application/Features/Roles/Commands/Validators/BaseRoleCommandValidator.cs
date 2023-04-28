@@ -18,7 +18,8 @@ public abstract class BaseRoleCommandValidator<T> : AbstractValidator<T>
 
         RuleFor(c => c)
             .MustAsync(RoleNameUnique)
-            .WithMessage("A role with the same name already exists.");
+            .WithMessage("A role with the same name already exists.")
+            .WithErrorCode("role.duplicate.name");
     }
 
     private async Task<bool> RoleNameUnique(BaseRoleCommand command, CancellationToken token)

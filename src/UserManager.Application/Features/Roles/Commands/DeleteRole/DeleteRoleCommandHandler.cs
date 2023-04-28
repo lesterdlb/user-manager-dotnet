@@ -18,11 +18,11 @@ public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, Error
 
     public async Task<ErrorOr<Unit>> Handle(DeleteRoleCommand command, CancellationToken cancellationToken)
     {
-        var role = await _roleRepository.GetRoleAsync(command.Id);
+        var role = await _roleRepository.GetByIdAsync(command.Id);
 
         if (role is null) return Errors.Role.RoleNotFound;
 
-        await _roleRepository.DeleteRoleAsync(command.Id);
+        await _roleRepository.DeleteAsync(command.Id);
 
         return Unit.Value;
     }
