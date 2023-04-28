@@ -19,4 +19,9 @@ public class User : BaseEntity<Guid>
     public DateTimeOffset? LockoutEnd { get; set; }
     public bool LockoutEnabled { get; set; }
     public int AccessFailedCount { get; set; }
+
+    public User()
+    {
+        Id = Guid.NewGuid();
+    }
 }

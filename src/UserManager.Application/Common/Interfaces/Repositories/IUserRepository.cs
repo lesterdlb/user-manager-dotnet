@@ -1,12 +1,11 @@
-﻿using UserManager.Application.Common.DTOs.User;
+﻿using UserManager.Domain.Entities;
 
 namespace UserManager.Application.Common.Interfaces.Repositories;
 
-public interface IUserRepository
+public interface IUserRepository : IAsyncRepository<User>
 {
-    Task<UserDto?> GetUserAsync(Guid userId);
-    Task<List<UserDto>> GetUsersAsync();
-    Task<UserDto> CreateUserAsync(CreateUserDto user);
-    Task<UserDto> UpdateUserAsync(UserDto user);
-    Task DeleteUserAsync(Guid userId);
+    Task<User> AddUserWithPasswordAsync(User user, string password);
+    Task<bool> EmailExistsAsync(string email);
+    Task<bool> UserNameExistsAsync(string userName);
+    Task<IEnumerable<string>> GetUserRolesAsync(Guid userId);
 }
