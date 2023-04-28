@@ -87,6 +87,7 @@ public static class DependencyInjection
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Lockout.AllowedForNewUsers = false;
             })
             .AddEntityFrameworkStores<UserManagerIdentityDbContext>()
             .AddDefaultTokenProviders();

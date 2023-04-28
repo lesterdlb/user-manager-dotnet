@@ -3,9 +3,5 @@
     <ItemGroup>
         <PackageReference Include="ErrorOr" Version="1.2.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Entities" />
-    </ItemGroup>
     
 </Project>

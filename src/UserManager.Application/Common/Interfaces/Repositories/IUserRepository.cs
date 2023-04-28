@@ -7,5 +7,6 @@ public interface IUserRepository : IAsyncRepository<User>
     Task<User> AddUserWithPasswordAsync(User user, string password);
     Task<bool> EmailExistsAsync(string email);
     Task<bool> UserNameExistsAsync(string userName);
+    Task AddUserToRoleAsync(Guid userId, string roleName);
     Task<IEnumerable<string>> GetUserRolesAsync(Guid userId);
 }

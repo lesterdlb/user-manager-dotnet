@@ -3,13 +3,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-using UserManager.Application.Common.DTOs.Role;
 using UserManager.Application.Common.Interfaces.Repositories;
+using UserManager.Domain.Entities;
 
 namespace UserManager.Infrastructure.Repositories;
 
 public class RoleRepository : IRoleRepository
 {
+    private const string AdminRole = "Admin";
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IMapper _mapper;
 
@@ -19,61 +20,57 @@ public class RoleRepository : IRoleRepository
         _mapper = mapper;
     }
 
-    public async Task<RoleDto?> GetRoleAsync(Guid roleId)
+    public async Task<Role?> GetByIdAsync(Guid roleId)
     {
         var appRole = await _roleManager.FindByIdAsync(roleId.ToString());
-        return appRole is null ? null : _mapper.Map<RoleDto>(appRole);
+        return (appRole is null || appRole.Name == AdminRole) ? null : _mapper.Map<Role>(appRole);
     }
 
-    public async Task<List<RoleDto>> GetRolesAsync()
+    public async Task<IEnumerable<Role>> GetAllAsync()
     {
         var roles = await _roleManager.Roles
-            .Select(r => new RoleDto { Id = r.Id, Name = r.Name ?? string.Empty, })
+            .Where(r => r.Name != AdminRole)
             .OrderBy(r => r.Name)
             .ToListAsync();
 
-        return _mapper.Map<List<RoleDto>>(roles);
+        return _mapper.Map<List<Role>>(roles);
     }
 
-    public async Task<bool> RoleExistsAsync(string name)
-        => await _roleManager.RoleExistsAsync(name);
-
-    public async Task<RoleDto> CreateRoleAsync(CreateRoleDto role)
+    public async Task<Role> AddAsync(Role role)
     {
         var appRole = _mapper.Map<IdentityRole>(role);
         var result = await _roleManager.CreateAsync(appRole);
 
         if (!result.Succeeded)
-        {
             throw new ApplicationException($"Unable to create role: {result.Errors.FirstOrDefault()?.Description}");
-        }
 
-        return _mapper.Map<RoleDto>(appRole);
+        return _mapper.Map<Role>(appRole);
     }
 
-    public async Task<RoleDto> UpdateRoleAsync(RoleDto role)
+    public async Task UpdateAsync(Role role)
     {
-        var appRole = await _roleManager.FindByIdAsync(role.Id);
+        var appRole = await _roleManager.FindByIdAsync(role.Id.ToString());
 
         if (appRole is null)
-        {
             throw new ApplicationException($"Unable to find role with id: {role.Id}");
-        }
 
         appRole.Name = role.Name;
         var result = await _roleManager.UpdateAsync(appRole);
 
         if (!result.Succeeded)
-        {
             throw new ApplicationException($"Unable to update role: {result.Errors.FirstOrDefault()?.Description}");
-        }
-
-        return _mapper.Map<RoleDto>(appRole);
     }
 
-    public async Task DeleteRoleAsync(Guid roleId)
+    public async Task DeleteAsync(Guid roleId)
     {
         var appRole = await _roleManager.FindByIdAsync(roleId.ToString());
-        await _roleManager.DeleteAsync(appRole!);
+
+        if (appRole is null)
+            throw new ApplicationException($"Unable to find role with id: {roleId}");
+
+        await _roleManager.DeleteAsync(appRole);
     }
+
+    public async Task<bool> RoleExistsAsync(string name)
+        => await _roleManager.RoleExistsAsync(name);
 }
