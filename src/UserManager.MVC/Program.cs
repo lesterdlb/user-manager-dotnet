@@ -1,4 +1,11 @@
+using System.Reflection;
+
+using Mapster;
+
+using MapsterMapper;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
+
 using UserManager.MVC.Contracts;
 using UserManager.MVC.Services;
 using UserManager.MVC.Services.Base;
@@ -14,9 +21,16 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddHttpClient<IClient, Client>(options =>
         options.BaseAddress = new Uri("https://localhost:7039/"));
 
+    var config = TypeAdapterConfig.GlobalSettings;
+    config.Scan(Assembly.GetExecutingAssembly());
+    builder.Services.AddSingleton(config);
+    builder.Services.AddScoped<IMapper, ServiceMapper>();
+
     // Services
     builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
     builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+
+    builder.Services.AddScoped<IRoleService, RoleService>();
 
     builder.Services.AddControllersWithViews();
 }
