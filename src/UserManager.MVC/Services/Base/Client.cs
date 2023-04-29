@@ -2,5 +2,5 @@
 
 public partial class Client
 {
-    public HttpClient HttpClient { get; }
+    public HttpClient HttpClient => _httpClient;
 }

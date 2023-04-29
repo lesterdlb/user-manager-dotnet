@@ -2,8 +2,8 @@
 
 public class Response<T>
 {
-    public string Message { get; init; } = null!;
-    public string ValidationErrors { get; init; } = null!;
-    public bool Success { get; init; }
-    public T Data { get; init; } = default!;
+    public string Message { get; set; } = null!;
+    public List<string> ValidationErrors { get; set; } = new();
+    public bool Success { get; set; }
+    public T Data { get; set; } = default!;
 }

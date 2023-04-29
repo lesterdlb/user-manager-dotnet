@@ -46,12 +46,12 @@ public class RolesController : ApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleCommand createRoleCommand)
+    public async Task<ActionResult<Guid>> Create([FromBody] CreateRoleCommand createRoleCommand)
     {
         var result = await Mediator.Send(createRoleCommand);
 
         return result.Match(
-            id => CreatedAtActionResult(id, createRoleCommand, nameof(GetRoleById)),
+            id => CreatedAtActionResult(nameof(GetRoleById), id, id),
             Problem);
     }
 
