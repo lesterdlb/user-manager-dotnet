@@ -64,6 +64,31 @@ public class RolesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(RoleViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        try
+        {
+            var response = await _roleService.UpdateRole(model);
+            if (response.Success) return RedirectToAction(nameof(Index));
+
+            ModelState.AddModelError(
+                string.Empty,
+                response.ValidationErrors.Count > 0
+                    ? new ValidationErrorsModel(response.ValidationErrors).ToString()
+                    : response.Message);
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError(string.Empty, ex.Message);
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id)
     {
         try

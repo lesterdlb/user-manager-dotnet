@@ -6,9 +6,10 @@
 
 <h1>Roles</h1>
 
+<hr/>
 <form id="remove" method="post"></form>
 
-<table class="table">
+<table class="table align-middle table-bordered table-striped">
     <thead>
     <tr>
         <th>
@@ -31,7 +32,11 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink(
+                    "Edit",
+                    "Edit",
+                    new { id = item.Id },
+                    new { @class = "btn btn-primary" })
                 <button
                     type="submit"
                     name="id"

@@ -58,7 +58,8 @@ public class RolesController : ApiController
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Update([FromBody] UpdateRoleCommand updateRoleCommand)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update([FromBody] UpdateRoleCommand updateRoleCommand)
     {
         var result = await Mediator.Send(updateRoleCommand);
 
@@ -68,10 +69,10 @@ public class RolesController : ApiController
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Delete(Guid id)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(Guid id)
     {
-        var deleteRoleCommand = new DeleteRoleCommand(id);
-        var result = await Mediator.Send(deleteRoleCommand);
+        var result = await Mediator.Send(new DeleteRoleCommand(id));
 
         return result.Match(_ => NoContent(), Problem);
     }
