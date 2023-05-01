@@ -8,7 +8,7 @@ using UserManager.Application.Common.Contracts.Authentication;
 using UserManager.Application.Common.Interfaces.Authentication;
 using UserManager.Domain.Common.Errors;
 
-namespace UserManager.Application.Authentication.Queries.Login;
+namespace UserManager.Application.Features.Authentication.Queries.Login;
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginResponse>>
 {

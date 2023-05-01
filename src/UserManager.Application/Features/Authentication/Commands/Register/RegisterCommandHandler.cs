@@ -28,6 +28,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<R
 
         if (user.IsError) return user.FirstError;
 
-        return new RegisterResponse(user.Value.UserId);
+        return user.Value;
     }
 }

@@ -41,14 +41,13 @@ public class IdentityService : IIdentityService
         RegisterRequest registerRequest, string password, string role)
     {
         var user = _mapper.Map<ApplicationUser>(registerRequest);
-        user.UserName = registerRequest.Email;
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded) return Errors.User.UserCouldNotBeCreated;
 
         await _userManager.AddToRoleAsync(user, role);
 
-        return _mapper.Map<RegisterResponse>(user);
+        return new RegisterResponse(user.Id);
     }
 
     public async Task<ErrorOr<LoginResponse>> LoginUserAsync(LoginRequest request)
@@ -67,15 +66,15 @@ public class IdentityService : IIdentityService
         var token = _jwtTokenGenerator
             .GenerateToken(new IdentityUserDto(
                 user.Id,
-                user.UserName!,
-                user.Email!,
+                user.UserName ?? string.Empty,
+                user.Email ?? string.Empty,
                 roles));
 
         return new LoginResponse(
             user.Id,
-            user.Email!,
             user.FirstName ?? string.Empty,
             user.LastName ?? string.Empty,
+            user.Email ?? string.Empty,
             token);
     }
 }

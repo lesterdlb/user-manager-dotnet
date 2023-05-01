@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using UserManager.Api.Controllers.Common;
-using UserManager.Application.Authentication.Queries.Login;
 using UserManager.Application.Common.Contracts.Authentication;
 using UserManager.Application.Features.Authentication.Commands.Register;
+using UserManager.Application.Features.Authentication.Queries.Login;
 
 namespace UserManager.Api.Controllers;
 

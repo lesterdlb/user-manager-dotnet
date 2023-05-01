@@ -19,6 +19,10 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .EmailAddress()
             .WithMessage("Email is not valid");
 
+        RuleFor(x => x.Request.UserName)
+            .NotEmpty()
+            .WithMessage("Username is required");
+
         RuleFor(x => x.Request.Password)
             .NotEmpty()
             .MinimumLength(6)
