@@ -12,11 +12,13 @@ namespace UserManager.Application.Features.Users.Commands.CreateUser;
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ErrorOr<Guid>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
     private readonly IMapper _mapper;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+    public CreateUserCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _mapper = mapper;
     }
 
@@ -25,8 +27,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Error
         var userToCreate = _mapper.Map<User>(command);
 
         var user = await _userRepository.AddUserWithPasswordAsync(userToCreate, command.Password);
+        var roleName = await _roleRepository.GetRoleNameByIdAsync(Guid.Parse(command.RoleId));
 
-        await _userRepository.AddUserToRoleAsync(user.Id, command.Role);
+        await _userRepository.AddUserToRoleAsync(user.Id, roleName);
 
         return user.Id;
     }

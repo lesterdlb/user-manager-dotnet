@@ -38,19 +38,19 @@ public abstract class BaseUserCommandValidator<T> : AbstractValidator<T>
             .NotEmpty().WithMessage("Password is required.")
             .MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
 
-        RuleFor(c => c.Role)
+        RuleFor(c => c.RoleId)
             .NotEmpty().WithMessage("Role is required.")
             .MustAsync(RoleExists)
             .WithMessage("Role does not exist.")
             .WithErrorCode("user.role.notfound");
     }
 
-    private async Task<bool> EmailUnique(BaseUserCommand command, string email, CancellationToken token)
+    private async Task<bool> EmailUnique(string email, CancellationToken token)
         => !await _userRepository.EmailExistsAsync(email);
 
-    private async Task<bool> UserNameUnique(BaseUserCommand command, string userName, CancellationToken token)
+    private async Task<bool> UserNameUnique(string userName, CancellationToken token)
         => !await _userRepository.UserNameExistsAsync(userName);
 
-    private async Task<bool> RoleExists(BaseUserCommand command, string role, CancellationToken token)
-        => await _roleRepository.RoleExistsAsync(role);
+    private async Task<bool> RoleExists(string roleId, CancellationToken token)
+        => await _roleRepository.RoleIdExistsAsync(Guid.Parse(roleId));
 }

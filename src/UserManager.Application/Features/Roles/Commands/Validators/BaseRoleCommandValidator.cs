@@ -16,14 +16,14 @@ public abstract class BaseRoleCommandValidator<T> : AbstractValidator<T>
         RuleFor(c => c.Name)
             .NotEmpty().WithMessage("Name is required");
 
-        RuleFor(c => c)
+        RuleFor(c => c.Name)
             .MustAsync(RoleNameUnique)
             .WithMessage("A role with the same name already exists.")
             .WithErrorCode("role.duplicate.name");
     }
 
-    private async Task<bool> RoleNameUnique(BaseRoleCommand command, CancellationToken token)
+    private async Task<bool> RoleNameUnique(string name, CancellationToken token)
     {
-        return !await _roleRepository.RoleExistsAsync(command.Name);
+        return !await _roleRepository.RoleNameExistsAsync(name);
     }
 }

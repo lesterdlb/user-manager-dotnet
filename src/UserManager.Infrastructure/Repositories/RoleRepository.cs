@@ -71,7 +71,10 @@ public class RoleRepository : IRoleRepository
         await _roleManager.DeleteAsync(appRole);
     }
 
-    public async Task<bool> RoleExistsAsync(string name)
+    public async Task<bool> RoleIdExistsAsync(Guid id)
+        => await _roleManager.Roles.AnyAsync(r => r.Id == id.ToString());
+
+    public async Task<bool> RoleNameExistsAsync(string name)
         => await _roleManager.RoleExistsAsync(name);
 
     public async Task<IEnumerable<string>> GetRolesIdsAsync(IEnumerable<string> roleNames)
@@ -79,5 +82,15 @@ public class RoleRepository : IRoleRepository
         return await _roleManager.Roles
             .Where(r => roleNames.Contains(r.Name))
             .Select(r => r.Id).ToListAsync();
+    }
+
+    public async Task<string> GetRoleNameByIdAsync(Guid roleId)
+    {
+        var appRole = await _roleManager.FindByIdAsync(roleId.ToString());
+
+        if (appRole is null)
+            throw new ApplicationException($"Unable to find role with id: {roleId}");
+
+        return appRole.Name!;
     }
 }
