@@ -31,27 +31,26 @@ public class RolesController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(CreateRoleViewModel role)
+    public async Task<IActionResult> Create(CreateRoleViewModel model)
     {
-        if (!ModelState.IsValid) return View(role);
+        if (!ModelState.IsValid) return View(model);
 
         try
         {
-            var response = await _roleService.CreateRole(role);
+            var response = await _roleService.CreateRole(model);
             if (response.Success) return RedirectToAction(nameof(Index));
 
-            ModelState.AddModelError(
-                string.Empty,
-                response.ValidationErrors.Count > 0
-                    ? new ValidationErrorsModel(response.ValidationErrors).ToString()
-                    : response.Message);
+            if (response.ValidationErrors.Count > 0)
+                response.ValidationErrors.ForEach(x => ModelState.AddModelError(string.Empty, x));
+            else
+                ModelState.AddModelError(string.Empty, response.Message);
         }
         catch (Exception ex)
         {
             ModelState.AddModelError(string.Empty, ex.Message);
         }
 
-        return View(role);
+        return View(model);
     }
 
     [HttpGet]
@@ -73,11 +72,10 @@ public class RolesController : Controller
             var response = await _roleService.UpdateRole(model);
             if (response.Success) return RedirectToAction(nameof(Index));
 
-            ModelState.AddModelError(
-                string.Empty,
-                response.ValidationErrors.Count > 0
-                    ? new ValidationErrorsModel(response.ValidationErrors).ToString()
-                    : response.Message);
+            if (response.ValidationErrors.Count > 0)
+                response.ValidationErrors.ForEach(x => ModelState.AddModelError(string.Empty, x));
+            else
+                ModelState.AddModelError(string.Empty, response.Message);
         }
         catch (Exception ex)
         {

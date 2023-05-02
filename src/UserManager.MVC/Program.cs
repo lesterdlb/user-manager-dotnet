@@ -31,6 +31,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
     builder.Services.AddScoped<IRoleService, RoleService>();
+    builder.Services.AddScoped<IUserService, UserService>();
 
     builder.Services.AddControllersWithViews();
 }
