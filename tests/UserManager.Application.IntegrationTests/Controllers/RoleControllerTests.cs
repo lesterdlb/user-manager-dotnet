@@ -85,11 +85,11 @@ public class RoleControllerTests : IAsyncLifetime
 
         var responseString = await response.Content.ReadAsStringAsync();
 
-        var result = JsonConvert.DeserializeObject<JObject>(responseString);
+        var result = JsonConvert.DeserializeObject<Guid>(responseString);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
         response.Headers.Location.ShouldNotBe(null);
-        result?.ShouldContainKeyAndValue("name", roleName);
+        result.ShouldNotBe(Guid.Empty);
     }
 
     [Fact]

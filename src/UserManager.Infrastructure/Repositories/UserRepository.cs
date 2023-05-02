@@ -96,13 +96,11 @@ public class UserRepository : IUserRepository
             await _userManager.AddToRoleAsync(user, roleName);
     }
 
-    public async Task<IEnumerable<string>> GetUserRolesAsync(Guid userId)
+    public async Task<IEnumerable<string>> GetUserRolesNamesAsync(Guid userId)
     {
         var appUser = await _userManager.FindByIdAsync(userId.ToString());
-        if (appUser != null)
-        {
+        if (appUser is not null)
             return await _userManager.GetRolesAsync(appUser);
-        }
 
         return new List<string>();
     }

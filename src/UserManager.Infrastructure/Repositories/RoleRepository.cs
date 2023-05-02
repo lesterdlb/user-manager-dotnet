@@ -73,4 +73,11 @@ public class RoleRepository : IRoleRepository
 
     public async Task<bool> RoleExistsAsync(string name)
         => await _roleManager.RoleExistsAsync(name);
+
+    public async Task<IEnumerable<string>> GetRolesIdsAsync(IEnumerable<string> roleNames)
+    {
+        return await _roleManager.Roles
+            .Where(r => roleNames.Contains(r.Name))
+            .Select(r => r.Id).ToListAsync();
+    }
 }

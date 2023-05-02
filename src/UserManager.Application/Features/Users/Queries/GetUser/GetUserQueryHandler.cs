@@ -13,11 +13,13 @@ namespace UserManager.Application.Features.Users.Queries.GetUser;
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
     private readonly IMapper _mapper;
 
-    public GetUserQueryHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUserQueryHandler(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _mapper = mapper;
     }
 
@@ -29,8 +31,9 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, ErrorOr<UserDto
 
         var userDto = _mapper.Map<UserDto>(user);
 
-        userDto.Roles = await _userRepository.GetUserRolesAsync(user.Id);
+        var roles = await _userRepository.GetUserRolesNamesAsync(user.Id);
+        userDto.Roles = await _roleRepository.GetRolesIdsAsync(roles);
 
-        return _mapper.Map<UserDto>(user);
+        return userDto;
     }
 }

@@ -10,11 +10,13 @@ namespace UserManager.Application.Features.Users.Queries.GetUsers;
 public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, List<UserDto>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
     private readonly IMapper _mapper;
 
-    public GetUsersQueryHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUsersQueryHandler(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _mapper = mapper;
     }
 
@@ -26,7 +28,8 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, List<UserDto>
 
         foreach (var dto in usersDto)
         {
-            dto.Roles = await _userRepository.GetUserRolesAsync(Guid.Parse(dto.Id));
+            var roles = await _userRepository.GetUserRolesNamesAsync(Guid.Parse(dto.Id));
+            dto.Roles = await _roleRepository.GetRolesIdsAsync(roles);
         }
 
         return usersDto;
